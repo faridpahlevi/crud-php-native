@@ -7,22 +7,24 @@ require_once('function/koneksi.php');
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
+    $password = $_POST['password'];
 
-    $query = mysqli_query($kon, "SELECT * FROM users WHERE username = '$username' AND password = '$password'");
+    $query = mysqli_query($kon, "SELECT * FROM users WHERE username = '$username'");
 
     if (mysqli_num_rows($query) != 0) {
         $row = mysqli_fetch_assoc($query);
+        if (password_verify($password, $row['password'])) {
+            session_start();
+            $_SESSION['is_login'] = true;
+            $_SESSION['role'] = $row['role'];
 
-        session_start();
-        $_SESSION['id'] = $row['id'];
-        $_SESSION['role'] = $row['role'];
-
-        if ($row['role'] == 'admin') {
-            header("location: " . BASE_URL . 'layout/dashboard.php?page=admin');
-        } else if ($row['role'] == 'user') {
-            header("location: " . BASE_URL . 'layout/dashboard.php?page=user');
+            if ($row['role'] == 'admin') {
+                header("location: " . BASE_URL . 'layout/dashboard.php?page=admin');
+            } else if ($row['role'] == 'user') {
+                header("location: " . BASE_URL . 'layout/dashboard.php?page=user');
+            }
         }
+        $kon->close();
     } else {
         header("location: " . BASE_URL);
     }

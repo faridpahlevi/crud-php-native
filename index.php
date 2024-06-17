@@ -1,6 +1,12 @@
 <?php
 require_once("function/helper.php");
 require_once "process/process_login.php";
+
+session_start();
+if (isset($_SESSION['is_login'])) {
+    $role = $_SESSION['role'];
+    header('location:' . BASE_URL . 'layout/dashboard.php?page=' . $role);
+}
 ?>
 
 <!DOCTYPE html>
