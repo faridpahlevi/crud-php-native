@@ -1,13 +1,12 @@
 <?php
 require "../function/koneksi.php";
-require "../function/helper.php";
 
-session_start();
-
-if (isset($_GET['id'])) {
+if (isset($_POST['ubah_data'])) {
     $id = $_GET['id'];
+    $nama = $_POST['nama'];
+    $harga = $_POST['harga'];
 
-    $query = "DELETE FROM product  WHERE id = '$id'";
+    $query = "UPDATE product SET nama='$nama', harga='$harga' WHERE id = '$id'";
     $kon->query($query);
     $role = $_SESSION['role'];
     header('location:' . BASE_URL . "layout/dashboard.php?page=" . $role);

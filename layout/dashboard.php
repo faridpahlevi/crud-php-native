@@ -58,7 +58,10 @@ if ($_SESSION['is_login'] = false) {
                     <td><?= $row['nama'] ?></td>
                     <td><?= $row['harga'] ?></td>
                     <td>
-                        <a href="<?= BASE_URL . 'process/process_delete_data.php?id=' . $row['id'] ?>">del</a>
+                        <?php if ($_SESSION['role'] == "admin") : ?>
+                            <a href="<?= BASE_URL . 'process/process_delete_data.php?id=' . $row['id'] ?>">del</a>
+                        <?php endif; ?>
+                        <a href="<?= BASE_URL . 'layout/dashboard.php?page=update_data&id=' . $row['id'] ?>">upd</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
